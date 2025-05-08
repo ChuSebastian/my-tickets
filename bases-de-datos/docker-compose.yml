@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - red_db
+      - network
     
   adminer:
     image: adminer
@@ -17,10 +17,10 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - red_db
+      - network
 
 volumes:
   mysql_data:
 
 networks:
-  red_db:
+  network:
