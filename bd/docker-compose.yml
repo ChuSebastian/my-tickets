@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mysql-usuarios:
+    image: mysql:8
+    container_name: mysql_c
+    environment:
+      MYSQL_ROOT_PASSWORD: utec
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - red_db
+    
+  adminer:
+    image: adminer
+    container_name: adminer_c
+    ports:
+      - "8080:8080"
+    networks:
+      - red_db
+
+volumes:
+  mysql_data:
+
+networks:
+  red_db:
