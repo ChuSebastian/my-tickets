@@ -4,13 +4,38 @@ services:
     container_name: mysql_c
     environment:
       MYSQL_ROOT_PASSWORD: utec
+      MYSQL_DATABASE: db_usuarios
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
       - network
-    
+
+  postgres-ventas:
+    image: postgres:15
+    container_name: postgres_c
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: utec
+      POSTGRES_DB: db_ventas
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - network
+
+  mongo-examenes:
+    image: mongo
+    container_name: mongo_c
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - network
+
   adminer:
     image: adminer
     container_name: adminer_c
@@ -21,6 +46,8 @@ services:
 
 volumes:
   mysql_data:
+  postgres_data:
+  mongo_data:
 
 networks:
   network:
