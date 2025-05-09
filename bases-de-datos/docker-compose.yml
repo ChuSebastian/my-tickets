@@ -12,13 +12,13 @@ services:
     networks:
       - network
 
-  postgres-ventas:
+  postgres-eventos:
     image: postgres:15
     container_name: postgres_c
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: utec
-      POSTGRES_DB: db_ventas
+      POSTGRES_DB: db_eventos
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -26,7 +26,7 @@ services:
     networks:
       - network
 
-  mongo-examenes:
+  mongo-ventas:
     image: mongo
     container_name: mongo_c
     ports:
