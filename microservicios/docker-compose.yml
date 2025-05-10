@@ -1,0 +1,13 @@
+services:
+  usuarios:
+    build:
+      context: ./usuarios  # Directorio donde se encuentra el Dockerfile para el microservicio
+    container_name: usuarios  # Nombre del contenedor
+    env_file:
+      - ./usuarios/.env  # Cargar las variables de entorno desde el archivo .env en usuarios
+    ports:
+      - "8000:8000"  # Mapear el puerto 8000 del contenedor al puerto 8000 de la máquina local
+    volumes:
+      - ./usuarios:/app  # Montar la carpeta usuarios como un volumen para que los cambios locales se reflejen dentro del contenedor
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload  # Comando para iniciar FastAPI
+

@@ -1,0 +1,16 @@
+# Archivos de entorno
+*.env
+
+# Virtual Envs
+.venv/
+venv/
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+
+# Docker temporales (si hubiera)
+**/.docker/
+
+# Ignora logs
+*.log
