@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.database import SessionLocal, Base, engine
 from app import models, schemas, crud
@@ -9,6 +10,15 @@ from sqlalchemy.exc import IntegrityError
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+# Configurar CORS para permitir cualquier origen
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todos los orígenes
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
+    allow_headers=["*"],  # Permite todos los encabezados
+)
 
 # Dependencia para obtener la sesión de la base de datos
 def get_db():
@@ -21,29 +31,18 @@ def get_db():
 # Ruta para registrar un nuevo usuario
 @app.post("/register", response_model=schemas.UserInDB)
 async def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    # Verificar si el usuario ya existe
     existing_user = crud.get_user_by_username(db, user.username)
     if existing_user:
         raise HTTPException(status_code=400, detail="Username already registered")
-
-    # Crear un nuevo usuario en la base de datos
     new_user = crud.create_user(db, user)
     return new_user
 
 # Ruta para hacer login de un usuario
 @app.post("/login")
 async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    # Buscar el usuario por su nombre de usuario
     db_user = crud.get_user_by_username(db, user.username)
-
-    # Verificar si el usuario existe
-    if not db_user:
+    if not db_user or db_user.password != user.password:
         raise HTTPException(status_code=400, detail="Invalid username or password")
-    
-    # Verificar si la contraseña es correcta
-    if db_user.password != user.password:
-        raise HTTPException(status_code=400, detail="Invalid username or password")
-    
     return {"message": "Login successful"}
 
 @app.get("/users", response_model=list[schemas.UserInDB])
