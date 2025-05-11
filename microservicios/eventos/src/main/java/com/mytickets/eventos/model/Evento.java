@@ -18,6 +18,10 @@ public class Evento {
 
     private String lugar;
 
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
     // Getters y setters
     public Long getId() {
         return id;
@@ -57,5 +61,13 @@ public class Evento {
 
     public void setLugar(String lugar) {
         this.lugar = lugar;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }
