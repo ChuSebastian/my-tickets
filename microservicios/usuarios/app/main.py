@@ -46,8 +46,14 @@ async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     
     return {"message": "Login successful"}
 
-# Ruta para obtener todos los usuarios
-@app.get("/users", response_model=list[schemas.UserOut])
-def get_all_users(db: Session = Depends(get_db)):
-    users = db.query(User).all()
-    return users
+@app.get("/users", response_model=list[schemas.UserInDB])
+async def get_all_users(db: Session = Depends(get_db)):
+    return crud.get_all_users(db)
+
+@app.post("/roles", response_model=schemas.Role)
+async def create_role(role: schemas.RoleCreate, db: Session = Depends(get_db)):
+    return crud.create_role(db, role)
+
+@app.post("/assign-role")
+async def assign_role(user_role: schemas.UserRoleCreate, db: Session = Depends(get_db)):
+    return crud.assign_role_to_user(db, user_role)

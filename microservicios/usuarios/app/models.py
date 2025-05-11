@@ -1,17 +1,28 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy.orm import relationship
 from app.database import Base
 
+# Tabla intermedia usuarios_roles
+class UserRole(Base):
+    __tablename__ = "usuarios_roles"
+    usuario_id = Column(Integer, ForeignKey("users.id"), primary_key=True)
+    rol_id = Column(Integer, ForeignKey("roles.id"), primary_key=True)
 
-# Definición del modelo User que representa la tabla de usuarios en la base de datos
+# Tabla de roles
+class Role(Base):
+    __tablename__ = "roles"
+    id = Column(Integer, primary_key=True, index=True)
+    nombre_rol = Column(String(50), unique=True, index=True)
+
+    usuarios = relationship("User", secondary="usuarios_roles", back_populates="roles")
+
+# Tabla de usuarios
 class User(Base):
-    __tablename__ = "users"  # Nombre de la tabla
+    __tablename__ = "users"
 
-    # Columnas de la tabla
-    id = Column(Integer, primary_key=True, index=True)  # ID único de cada usuario
-    username = Column(
-        String(100), unique=True, index=True, nullable=False
-    )  # Nombre de usuario único
-    email = Column(String(200), nullable=False)  # Email único
-    password = Column(
-        String(200), nullable=False
-    )  # Contraseña sin encriptación por ahora
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(100), unique=True, index=True, nullable=False)
+    email = Column(String(200), nullable=False)
+    password = Column(String(200), nullable=False)
+
+    roles = relationship("Role", secondary="usuarios_roles", back_populates="usuarios")
