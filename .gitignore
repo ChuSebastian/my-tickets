@@ -12,5 +12,13 @@ __pycache__/
 # Docker temporales (si hubiera)
 **/.docker/
 
-# Ignora logs
+# Ignorar archivos de configuración de Docker
 *.log
+*.pid
+docker-compose.override.yml
+
+# Ignorar archivos de compilación de Maven (si estás usando Java)
+target/
+
+
+

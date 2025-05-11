@@ -1,13 +1,38 @@
 services:
+  eventos:
+    build:
+      context: ./eventos  # Contexto para el microservicio de Java
+    container_name: eventos-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST}:5432/db_eventos
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: utec
+    networks:
+      - api
+
   usuarios:
     build:
-      context: ./usuarios  # Directorio donde se encuentra el Dockerfile para el microservicio
-    container_name: usuarios  # Nombre del contenedor
-    env_file:
-      - ./usuarios/.env  # Cargar las variables de entorno desde el archivo .env en usuarios
+      context: ./usuarios  # Contexto para el microservicio de Python
+    container_name: usuarios-api
     ports:
-      - "8000:8000"  # Mapear el puerto 8000 del contenedor al puerto 8000 de la máquina local
+      - "8000:8000"
     volumes:
-      - ./usuarios:/app  # Montar la carpeta usuarios como un volumen para que los cambios locales se reflejen dentro del contenedor
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload  # Comando para iniciar FastAPI
+      - ./usuarios:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      MYSQL_HOST: ${DB_HOST}  
+      MYSQL_USER: root
+      MYSQL_PASSWORD: utec
+    networks:
+      - api
 
+networks:
+  api:
+    driver: bridge
+
+
+
+# Probar usuarios: http://localhost:8000/docs
+# Probar eventos: http://localhost:8080/swagger-ui/index.html#/
