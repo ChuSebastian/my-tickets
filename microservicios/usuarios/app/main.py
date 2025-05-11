@@ -14,10 +14,10 @@ app = FastAPI()
 # Configurar CORS para permitir cualquier origen
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permite todos los orígenes
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
-    allow_headers=["*"],  # Permite todos los encabezados
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
 # Dependencia para obtener la sesión de la base de datos
@@ -31,21 +31,20 @@ def get_db():
 # Ruta para registrar un nuevo usuario
 @app.post("/register", response_model=schemas.UserInDB)
 async def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    existing_user = crud.get_user_by_username(db, user.username)
+    existing_user = crud.get_user_by_email(db, user.email)
     if existing_user:
-        raise HTTPException(status_code=400, detail="Username already registered")
-    new_user = crud.create_user(db, user)
-    return new_user
+        raise HTTPException(status_code=400, detail="Email already registered")
+    return crud.create_user(db, user)
 
 # Ruta para hacer login de un usuario
 @app.post("/login")
-async def login_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_username(db, user.username)
+async def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, user.email)
     if not db_user or db_user.password != user.password:
-        raise HTTPException(status_code=400, detail="Invalid username or password")
+        raise HTTPException(status_code=400, detail="Invalid email or password")
     return {"message": "Login successful"}
 
-@app.get("/users", response_model=list[schemas.UserInDB])
+@app.get("/users", response_model=list[schemas.UserOut])
 async def get_all_users(db: Session = Depends(get_db)):
     return crud.get_all_users(db)
 

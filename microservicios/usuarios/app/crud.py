@@ -14,6 +14,10 @@ def create_user(db: Session, user: schemas.UserCreate):
 def get_user_by_username(db: Session, username: str):
     return db.query(User).filter(User.username == username).first()
 
+# Obtener un usuario por email
+def get_user_by_email(db: Session, email: str):
+    return db.query(User).filter(User.email == email).first()
+
 # Crear rol
 def create_role(db: Session, role: schemas.RoleCreate):
     db_role = Role(nombre_rol=role.nombre_rol)
@@ -32,3 +36,4 @@ def assign_role_to_user(db: Session, user_role: schemas.UserRoleCreate):
 # Obtener todos los usuarios
 def get_all_users(db: Session):
     return db.query(User).all()
+

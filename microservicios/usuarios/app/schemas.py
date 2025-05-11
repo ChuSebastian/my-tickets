@@ -17,7 +17,11 @@ class UserOut(BaseModel):
     email: str
 
     class Config:
-        from_attributes = True  
+        orm_mode = True
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
 
 class RoleBase(BaseModel):
     nombre_rol: str
