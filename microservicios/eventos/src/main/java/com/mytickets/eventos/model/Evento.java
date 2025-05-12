@@ -18,6 +18,11 @@ public class Evento {
 
     private String lugar;
 
+    private int precio;
+
+    @Column(name = "imagen")
+    private String imagen;
+
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
@@ -61,6 +66,22 @@ public class Evento {
 
     public void setLugar(String lugar) {
         this.lugar = lugar;
+    }
+
+    public int getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(int precio) {
+        this.precio = precio;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagePath(String imagen) {
+        this.imagen = imagen;
     }
 
     public Categoria getCategoria() {
