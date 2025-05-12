@@ -1,6 +1,8 @@
 package com.mytickets.eventos.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,9 +16,9 @@ public class Categoria {
     private String nombre;
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-    private List<Evento> eventos;
+    @JsonIgnore
+    private List<Evento> eventos = new ArrayList<>();
 
-    // Getters y setters
     public Long getId() {
         return id;
     }
