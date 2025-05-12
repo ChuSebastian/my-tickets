@@ -11,7 +11,7 @@ MYSQL_HOST = os.getenv("MYSQL_HOST")
 MYSQL_PORT = os.getenv("MYSQL_PORT", 3306)
 
 # Nombre de la base de datos
-DB_NAME = "usuarios_mysql"
+DB_NAME = "db_usuarios"
 
 # URL sin especificar base de datos
 DB_ROOT_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}"
