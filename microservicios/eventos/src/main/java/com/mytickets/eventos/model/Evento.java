@@ -80,7 +80,7 @@ public class Evento {
         return imagen;
     }
 
-    public void setImagePath(String imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 
