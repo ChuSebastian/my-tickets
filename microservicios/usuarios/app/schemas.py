@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+# --- Usuario ---
+
 class UserCreate(BaseModel):
     username: str
     email: str
@@ -23,6 +25,8 @@ class UserLogin(BaseModel):
     email: str
     password: str
 
+# --- Rol ---
+
 class RoleBase(BaseModel):
     nombre_rol: str
 
@@ -31,11 +35,12 @@ class RoleCreate(RoleBase):
 
 class Role(RoleBase):
     id: int
+
     class Config:
         from_attributes = True
+
+# --- Relación Usuario-Rol ---
 
 class UserRoleCreate(BaseModel):
     usuario_id: int
     rol_id: int
-
-

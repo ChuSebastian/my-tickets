@@ -25,6 +25,7 @@ services:
       MYSQL_HOST: ${DB_HOST}  
       MYSQL_USER: root
       MYSQL_PASSWORD: utec
+      MYSQL_DATABASE: db_usuarios
     networks:
       - api
 
