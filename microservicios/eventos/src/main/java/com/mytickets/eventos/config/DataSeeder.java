@@ -26,14 +26,14 @@ public class DataSeeder implements CommandLineRunner {
         if (categoriaRepository.count() == 0) {
             List<String> nombres = List.of(
                     "Concierto", "Teatro", "Feria", "Festival", "Cine",
-                    "Danza", "Exposición", "Deporte", "Charla", "Taller"
-            );
+                    "Danza", "Exposición", "Deporte", "Charla", "Taller");
 
             for (String nombre : nombres) {
                 Categoria categoria = new Categoria();
                 categoria.setNombre(nombre);
                 categoriaRepository.save(categoria);
             }
+            categoriaRepository.flush();
         }
 
         if (eventoRepository.count() == 0) {
@@ -48,21 +48,21 @@ public class DataSeeder implements CommandLineRunner {
                 evento.setDescripcion("Descripción del evento número " + i);
                 evento.setFecha(LocalDate.now().plusDays(random.nextInt(365)).toString());
                 evento.setLugar("Lugar " + (random.nextInt(100) + 1));
-                evento.setPrecio(10 + random.nextInt(91)); // entre 10 y 100
+                evento.setPrecio(10 + random.nextInt(91));
                 evento.setImagen("/img" + (random.nextInt(10) + 1) + ".jpg");
                 evento.setCategoria(categorias.get(random.nextInt(categorias.size())));
                 eventos.add(evento);
 
-                // Guardar en lotes de 500
                 if (eventos.size() == 500) {
                     eventoRepository.saveAll(eventos);
+                    eventoRepository.flush();
                     eventos.clear();
                 }
             }
 
-            // Guardar los últimos eventos
             if (!eventos.isEmpty()) {
                 eventoRepository.saveAll(eventos);
+                eventoRepository.flush();
             }
 
             System.out.println("✅ Base de datos poblada con 10 categorías y 20,000 eventos.");
