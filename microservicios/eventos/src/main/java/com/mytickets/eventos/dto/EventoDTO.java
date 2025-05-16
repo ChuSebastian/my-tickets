@@ -7,5 +7,9 @@ public class EventoDTO {
     public String lugar;
     public int precio;
     public String imagen;
-    public Long categoriaId;
+    public CategoriaDto categoria;
+
+    public static class CategoriaDto {
+        public Long id;
+    }
 }

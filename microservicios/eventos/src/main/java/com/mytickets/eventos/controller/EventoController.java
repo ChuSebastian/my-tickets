@@ -29,7 +29,11 @@ public class EventoController {
     @PostMapping
     @Operation(summary = "Crear un nuevo evento")
     public ResponseEntity<?> crearEvento(@RequestBody EventoDTO dto) {
-        Optional<Categoria> categoriaOpt = categoriaRepository.findById(dto.categoriaId);
+        if (dto.categoria == null || dto.categoria.id == null) {
+            return ResponseEntity.badRequest().body("❌ El campo 'categoria.id' es obligatorio.");
+        }
+
+        Optional<Categoria> categoriaOpt = categoriaRepository.findById(dto.categoria.id);
         if (categoriaOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("❌ Categoría no encontrada");
         }
